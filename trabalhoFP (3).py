@@ -255,6 +255,33 @@ def adicionar_tarefas():
 
 carregar_pets()
 
+def mostrar_estatisticas():
+    if not Pets:
+        print("Nenhum pet cadastrado.\n")
+        return
+
+    total = len(Pets)
+    especies = {}
+    soma_idades = 0
+    qtd_idades_validas = 0
+
+    for pet in Pets:
+        especie = pet["especie"].lower()
+        especies[especie] = especies.get(especie, 0) + 1
+
+        idade = calcular_idade(pet["nascimento"])
+        if idade > 0:
+            soma_idades += idade
+            qtd_idades_validas += 1
+
+    media_idade = soma_idades / qtd_idades_validas if qtd_idades_validas else 0
+
+    print(f"\n=== Estatísticas ===")
+    print(f"Total de pets: {total}")
+    for especie, qtd in especies.items():
+        print(f"{especie.capitalize()}: {qtd}")
+    print(f"Idade média: {media_idade:.1f} anos\n")
+
 while True:
     print("==== MENU ====")
     print("1 - Adicionar PET")
@@ -263,6 +290,7 @@ while True:
     print("4 - Excluir PET")
     print("5 - Registrar eventos")
     print("6 - Adicionar tarefas")
+    print("7 - Mostrar estatísticas")
     print("0 - Sair")
     opcao = input("Escolha uma opção: ").strip()
 
@@ -278,6 +306,8 @@ while True:
         registrar_eventos()
     elif opcao == "6":
         adicionar_tarefas()
+    elif opcao == "7":
+        mostrar_estatisticas()
     elif opcao == "0":
         print("Encerrando o programa.")
         break
