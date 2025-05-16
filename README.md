@@ -18,5 +18,14 @@ Após o usuário selecionar a opção "adicionar PET", o mesmo deverá inserir o
 
 Após o cadastro do primeiro PET, será exibida uma mensagem indicando sucesso no cadastro, e será criado o arquivo "cadastro_PET", com todas as informações fornecidas pelo usuário e as recomendações para o PET de acordo com a idade e espécie do mesmo.
 
-As mesmas opções de entrada serão exibidas para o usuário. Dessa vez, já com o primeiro PET cadastrado, o usuário tem as opções de: adicionar um novo PET ao cadastro; visualizar os PETs cadastrados no terminal; editar alguma informação fornecida equivocadamente; excluir o cadastro de algum PET; registrar eventos para algum PET cadastrado, como vacinas, consultas veterinárias e aplicação de remédios; adicionar tarefas (ou metas), como levar seu PET ao veterinário a cada tantos meses ou fazer tantos passeios na semana; mostrar estatísticas, que serão exibidas no terminal com o total de pets cadastrados, o total de cada espécie cadastrada e a idade média dos PETs cadastrados; além disso, o usuário ainda tem a opção de encerrar o cadastro dos PETs digitando o número "0", informado para encerrar o programa.
+As mesmas opções de entrada serão exibidas para o usuário. Dessa vez, já com o primeiro PET cadastrado, o usuário tem as opções de:
+
+• Adicionar um novo PET ao cadastro; 
+• Visualizar os PETs cadastrados no terminal;
+• Editar alguma informação fornecida equivocadamente; 
+• Excluir o cadastro de algum PET;
+• Registrar eventos para algum PET cadastrado, como vacinas, consultas veterinárias e aplicação de remédios; 
+• Adicionar tarefas (ou metas), como levar seu PET ao veterinário a cada tantos meses ou fazer tantos passeios na semana;
+• Mostrar estatísticas, que serão exibidas no terminal com o total de pets cadastrados, o total de cada espécie cadastrada e a idade média dos PETs cadastrados;
+• Além disso, o usuário ainda tem a opção de encerrar o cadastro dos PETs digitando o número "0", informado para encerrar o programa.
 
