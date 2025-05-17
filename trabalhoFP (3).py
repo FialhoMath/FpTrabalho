@@ -7,7 +7,7 @@ Eventos = []
 def calcular_idade(nascimento):
     try:
         dia_nasc, mes_nasc, ano_nasc = map(int, nascimento.split("/"))
-        dia_atual, mes_atual, ano_atual = 20, 5, 2025
+        dia_atual, mes_atual, ano_atual = 20, 5, 2025 # Data escolhida manualmente, sem o uso de biblioteca adicional
         idade = ano_atual - ano_nasc
         if (mes_atual, dia_atual) < (mes_nasc, dia_nasc):
             idade -= 1
