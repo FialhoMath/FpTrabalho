@@ -2,14 +2,12 @@ import os
 
 os.system("cls")
 Pets = []
+Eventos = []
 
 def calcular_idade(nascimento):
     try:
         dia_nasc, mes_nasc, ano_nasc = map(int, nascimento.split("/"))
-        dia_atual = 20
-        mes_atual = 5
-        ano_atual = 2025
-
+        dia_atual, mes_atual, ano_atual = 20, 5, 2025
         idade = ano_atual - ano_nasc
         if (mes_atual, dia_atual) < (mes_nasc, dia_nasc):
             idade -= 1
@@ -22,85 +20,73 @@ def gerar_recomendacoes(especie, idade):
     recomendacoes = []
     if especie == "cachorro":
         if idade < 1:
-            recomendacoes.extend([
-                "Alimentacao: duas a tres vezes ao dia.",
-                "Brinquedos: bolas para corrida.",
-                "Atividade: passeios e brincadeiras."
-            ])
-        elif 1 <= idade < 5:
-            recomendacoes.extend([
-                "Alimentacao: duas vezes ao dia.",
-                "Brinquedos: resistentes para mordida e brinquedos para corrida.",
-                "Atividade: passeios e brincadeiras."
-            ])
-        elif 5 <= idade < 10:
-            recomendacoes.extend([
-                "Alimentacao: duas vezes ao dia.",
-                "Brinquedos: resistentes para mordida.",
-                "Atividade: caminhadas regulares."
-            ])
+            recomendacoes = ["Alimentacao: duas a tres vezes ao dia.", "Brinquedos: bolas para corrida.", "Atividade: passeios e brincadeiras."]
+        elif idade < 5:
+            recomendacoes = ["Alimentacao: duas vezes ao dia.", "Brinquedos: resistentes para mordida e corrida.", "Atividade: passeios e brincadeiras."]
+        elif idade < 10:
+            recomendacoes = ["Alimentacao: duas vezes ao dia.", "Brinquedos: resistentes para mordida.", "Atividade: caminhadas regulares."]
         else:
-            recomendacoes.extend([
-                "Alimentacao: duas vezes ao dia.",
-                "Brinquedos: brinquedos de leve intensidade.",
-                "Atividade: pequenas caminhadas."
-            ])
+            recomendacoes = ["Alimentacao: duas vezes ao dia.", "Brinquedos: leve intensidade.", "Atividade: pequenas caminhadas."]
     elif especie == "gato":
         if idade < 1:
-            recomendacoes.extend([
-                "Alimentacao: duas a tres vezes ao dia.",
-                "Brinquedos: bolas leves e arranhadores.",
-                "Atividade: exploracao e brincadeiras."
-            ])
-        elif 1 <= idade < 5:
-            recomendacoes.extend([
-                "Alimentacao: duas vezes ao dia.",
-                "Brinquedos: arranhadores e ratinhos.",
-                "Atividade: atividades com os brinquedos."
-            ])
-        elif 5 <= idade < 10:
-            recomendacoes.extend([
-                "Alimentacao: duas vezes ao dia.",
-                "Brinquedos: arranhadores e lasers.",
-                "Atividade: medio impacto, manter o animal ativo."
-            ])
+            recomendacoes = ["Alimentacao: duas a tres vezes ao dia.", "Brinquedos: bolas leves e arranhadores.", "Atividade: exploracao e brincadeiras."]
+        elif idade < 5:
+            recomendacoes = ["Alimentacao: duas vezes ao dia.", "Brinquedos: arranhadores e ratinhos.", "Atividade: atividades com brinquedos."]
+        elif idade < 10:
+            recomendacoes = ["Alimentacao: duas vezes ao dia.", "Brinquedos: arranhadores e lasers.", "Atividade: médio impacto."]
         else:
-            recomendacoes.extend([
-                "Alimentacao: leve e controlada.",
-                "Brinquedos: suaves.",
-                "Atividade: baixo impacto."
-            ])
+            recomendacoes = ["Alimentacao: leve e controlada.", "Brinquedos: suaves.", "Atividade: baixo impacto."]
     return " | ".join(recomendacoes)
+
+# Armazenamento
 
 def carregar_pets():
     try:
-        with open("cadastro_PET", "r") as file:
+        with open("cadastro_PET.txt", "r") as file:
             for linha in file:
                 dados = linha.strip().split("|")
-                if len(dados) == 6:
-                    nome, especie, raca, nascimento, peso, recomendacoes = dados
+                if len(dados) >= 6:
+                    nome, especie, raca, nascimento, peso, recomendacoes = dados[:6]
+                    tarefas = dados[6].split(";") if len(dados) > 6 and dados[6] else []
                     Pets.append({
-                        "nome": nome,
-                        "especie": especie,
-                        "raca": raca,
-                        "nascimento": nascimento,
-                        "peso": peso,
-                        "recomendacoes": recomendacoes
+                        "nome": nome, "especie": especie, "raca": raca,
+                        "nascimento": nascimento, "peso": peso,
+                        "recomendacoes": recomendacoes, "tarefas": tarefas
                     })
     except FileNotFoundError:
         pass
 
 def salvar_pets():
-    with open("cadastro_PET", "w") as file:
+    with open("cadastro_PET.txt", "w") as file:
         for pet in Pets:
-            linha = f"{pet['nome']}|{pet['especie']}|{pet['raca']}|{pet['nascimento']}|{pet['peso']}|{pet['recomendacoes']}\n"
+            tarefas_str = ";".join(pet.get("tarefas", []))
+            linha = f"{pet['nome']}|{pet['especie']}|{pet['raca']}|{pet['nascimento']}|{pet['peso']}|{pet['recomendacoes']}|{tarefas_str}\n"
             file.write(linha)
+
+def carregar_eventos():
+    try:
+        with open("eventos_PET.txt", "r") as file:
+            for linha in file:
+                dados = linha.strip().split("|")
+                if len(dados) == 4:
+                    Eventos.append({
+                        "nome_pet": dados[0],
+                        "tipo": dados[1],
+                        "data": dados[2],
+                        "observacoes": dados[3]
+                    })
+    except FileNotFoundError:
+        pass
+
+def salvar_evento(evento):
+    with open("eventos_PET.txt", "a") as file:
+        linha = f"{evento['nome_pet']}|{evento['tipo']}|{evento['data']}|{evento['observacoes']}\n"
+        file.write(linha)
 
 def adicionar_pet():
     nome = input("Nome do PET: ")
     especie = input("Espécie: ")
     raca = input("Raça: ")
-
     nascimento = input("Data de nascimento (dd/mm/aaaa): ")
     while True:
         partes = nascimento.split("/")
@@ -108,20 +94,16 @@ def adicionar_pet():
             dia, mes, ano = map(int, partes)
             if 1 <= dia <= 31 and 1 <= mes <= 12 and ano >= 1900:
                 break
-        nascimento = input("Insira a data de nascimento no formato dd/mm/aaaa: ")
+        nascimento = input("Data inválida. Insira novamente (dd/mm/aaaa): ")
 
     peso = input("Peso (em kg): ")
-
     idade = calcular_idade(nascimento)
     recomendacoes = gerar_recomendacoes(especie, idade)
 
     Pets.append({
-        "nome": nome,
-        "especie": especie,
-        "raca": raca,
-        "nascimento": nascimento,
-        "peso": peso,
-        "recomendacoes": recomendacoes
+        "nome": nome, "especie": especie, "raca": raca,
+        "nascimento": nascimento, "peso": peso,
+        "recomendacoes": recomendacoes, "tarefas": []
     })
     salvar_pets()
     print("Pet cadastrado com sucesso!\n")
@@ -137,13 +119,13 @@ def visualizar_pets():
         print(f"[{i}] Nome: {pet['nome']}, Espécie: {pet['especie']}, Raça: {pet['raca']}, "
               f"Nascimento: {pet['nascimento']}, Idade: {idade_str}, Peso: {pet['peso']}")
         print(f"Recomendações: {pet['recomendacoes']}")
+        print(f"Tarefas: {', '.join(pet.get('tarefas', []))}")
     print()
 
 def editar_pet():
     visualizar_pets()
     if not Pets:
         return
-
     try:
         indice = int(input("Índice do PET a editar: "))
         if 0 <= indice < len(Pets):
@@ -161,13 +143,11 @@ def editar_pet():
                         if 1 <= dia <= 31 and 1 <= mes <= 12 and ano >= 1900:
                             pet["nascimento"] = nova_data
                             break
-                    nova_data = input("Insira a data de nascimento no formato dd/mm/aaaa: ")
+                    nova_data = input("Data inválida. Insira novamente (dd/mm/aaaa): ")
 
             pet["peso"] = input(f"Novo peso ({pet['peso']}): ") or pet["peso"]
-
             idade = calcular_idade(pet["nascimento"])
             pet["recomendacoes"] = gerar_recomendacoes(pet["especie"], idade)
-
             salvar_pets()
             print("Cadastro atualizado!\n")
         else:
@@ -179,7 +159,6 @@ def excluir_pet():
     visualizar_pets()
     if not Pets:
         return
-
     try:
         indice = int(input("Índice do PET a excluir: "))
         if 0 <= indice < len(Pets):
@@ -198,36 +177,22 @@ def registrar_eventos():
 
     for pet in Pets:
         print(f"\nRegistrando eventos para {pet['nome']}:")
-        if input("Registrar vacinação? (S/N): ").strip().lower() == "s":
-            data = input("Data da vacinação (dd/mm/aaaa): ")
-            obs = input("Observações: ")
-            print(f"Vacina registrada: {data}, Obs: {obs}")
-
-        if input("Registrar consulta veterinária? (S/N): ").strip().lower() == "s":
-            data = input("Data da consulta (dd/mm/aaaa): ")
-            obs = input("Observações: ")
-            print(f"Consulta registrada: {data}, Obs: {obs}")
-
-        if input("Registrar aplicação de remédio? (S/N): ").strip().lower() == "s":
-            data = input("Data da aplicação (dd/mm/aaaa): ")
-            obs = input("Observações: ")
-            print(f"Remédio registrado: {data}, Obs: {obs}")
-    print()
+        for tipo in ["vacinação", "consulta", "remédio"]:
+            if input(f"Registrar {tipo}? (S/N): ").strip().lower() == "s":
+                data = input("Data (dd/mm/aaaa): ")
+                obs = input("Observações: ")
+                evento = {"nome_pet": pet["nome"], "tipo": tipo, "data": data, "observacoes": obs}
+                Eventos.append(evento)
+                salvar_evento(evento)
+                print(f"{tipo.capitalize()} registrada com sucesso.")
 
 def create_task(tipo_da_task: int, valor: int) -> str:
     if tipo_da_task == 1:
-        return create_task_1(valor)
+        return f"Levar ao veterinário a cada {valor} mês(es)"
     elif tipo_da_task == 2:
-        return create_task_2(valor)
+        return f"Fazer {valor} passeio(s) por semana"
     else:
-        print("Tipo de task inválido!")
         return ""
-
-def create_task_1(meses: int) -> str:
-    return f"Levar ao veterinário a cada {meses} mês(es)"
-
-def create_task_2(passeios: int) -> str:
-    return f"Fazer {passeios} passeio(s) por semana"
 
 def adicionar_tarefas():
     visualizar_pets()
@@ -237,50 +202,47 @@ def adicionar_tarefas():
     try:
         indice = int(input("Escolha o índice do PET para adicionar tarefas: "))
         if 0 <= indice < len(Pets):
-            print("Tipos de tarefas disponíveis:")
+            print("Tipos de tarefas:")
             print("1 - Veterinário")
             print("2 - Passeios")
-            tipo = int(input("Escolha o tipo da tarefa (1 ou 2): "))
-            valor = int(input("Digite o valor correspondente (meses para veterinário ou passeios por semana): "))
+            tipo = int(input("Tipo da tarefa (1 ou 2): "))
+            valor = int(input("Valor (meses ou passeios): "))
             tarefa = create_task(tipo, valor)
-            if "tarefas" not in Pets[indice]:
-                Pets[indice]["tarefas"] = []
-            Pets[indice]["tarefas"].append(tarefa)
-            salvar_pets()
-            print("Tarefa adicionada com sucesso!\n")
+            if tarefa:
+                Pets[indice].setdefault("tarefas", []).append(tarefa)
+                salvar_pets()
+                print("Tarefa adicionada com sucesso!\n")
+            else:
+                print("Tipo de tarefa inválido.\n")
         else:
             print("Índice inválido.\n")
     except ValueError:
         print("Entrada inválida.\n")
 
-carregar_pets()
-
 def mostrar_estatisticas():
     if not Pets:
         print("Nenhum pet cadastrado.\n")
         return
-
     total = len(Pets)
     especies = {}
     soma_idades = 0
-    qtd_idades_validas = 0
-
+    qtd_validas = 0
     for pet in Pets:
         especie = pet["especie"].lower()
         especies[especie] = especies.get(especie, 0) + 1
-
         idade = calcular_idade(pet["nascimento"])
         if idade > 0:
             soma_idades += idade
-            qtd_idades_validas += 1
-
-    media_idade = soma_idades / qtd_idades_validas if qtd_idades_validas else 0
-
-    print(f"\n=== Estatísticas ===")
+            qtd_validas += 1
+    media_idade = soma_idades / qtd_validas if qtd_validas else 0
+    print("\n=== Estatísticas ===")
     print(f"Total de pets: {total}")
-    for especie, qtd in especies.items():
-        print(f"{especie.capitalize()}: {qtd}")
+    for esp, qtd in especies.items():
+        print(f"{esp.capitalize()}: {qtd}")
     print(f"Idade média: {media_idade:.1f} anos\n")
+
+carregar_pets()
+carregar_eventos()
 
 while True:
     print("==== MENU ====")
