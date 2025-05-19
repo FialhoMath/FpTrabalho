@@ -94,7 +94,7 @@ def adicionar_pet():
             dia, mes, ano = map(int, partes)
             if 1 <= dia <= 31 and 1 <= mes <= 12 and ano >= 1900:
                 break
-        nascimento = input("Data inválida. Insira novamente (dd/mm/aaaa): ")
+        nascimento = input("Data inválida. Insira no formato dd/mm/aaaa: ")
 
     peso = input("Peso (em kg): ")
     idade = calcular_idade(nascimento)
@@ -206,7 +206,7 @@ def adicionar_tarefas():
             print("1 - Veterinário")
             print("2 - Passeios")
             tipo = int(input("Tipo da tarefa (1 ou 2): "))
-            valor = int(input("Valor (meses ou passeios): "))
+            valor = int(input("Valor (consultas/meses ou passeios/semana): "))
             tarefa = create_task(tipo, valor)
             if tarefa:
                 Pets[indice].setdefault("tarefas", []).append(tarefa)
