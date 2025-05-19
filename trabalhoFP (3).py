@@ -206,7 +206,7 @@ def adicionar_tarefas():
             print("1 - Veterinário")
             print("2 - Passeios")
             tipo = int(input("Tipo da tarefa (1 ou 2): "))
-            valor = int(input("Valor (consultas/meses ou passeios/semana): "))
+            valor = int(input("Valor (consultas/mês ou passeios/semana): "))
             tarefa = create_task(tipo, valor)
             if tarefa:
                 Pets[indice].setdefault("tarefas", []).append(tarefa)
