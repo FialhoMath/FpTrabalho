@@ -85,7 +85,7 @@ def salvar_evento(evento):
 
 def adicionar_pet():
     nome = input("Nome do PET: ")
-    especie = input("Espécie: ")
+    especie = input("Espécie (cachorro ou gato): ")
     raca = input("Raça: ")
     nascimento = input("Data de nascimento (dd/mm/aaaa): ")
     while True:
