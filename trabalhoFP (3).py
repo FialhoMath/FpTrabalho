@@ -7,7 +7,7 @@ Eventos = []
 def calcular_idade(nascimento):
     try:
         dia_nasc, mes_nasc, ano_nasc = map(int, nascimento.split("/"))
-        dia_atual, mes_atual, ano_atual = 20, 5, 2025 # Data escolhida manualmente, sem o uso de biblioteca adicional
+        dia_atual, mes_atual, ano_atual = 20, 5, 2025  # Data escolhhida manualmente, sem uso de biblioteca adicional
         idade = ano_atual - ano_nasc
         if (mes_atual, dia_atual) < (mes_nasc, dia_nasc):
             idade -= 1
@@ -177,7 +177,7 @@ def registrar_eventos():
 
     for pet in Pets:
         print(f"\nRegistrando eventos para {pet['nome']}:")
-        for tipo in ["vacinação", "consulta", "remédio"]:
+        for tipo in ["vacinacao", "consulta", "remedio"]:
             if input(f"Registrar {tipo}? (S/N): ").strip().lower() == "s":
                 data = input("Data (dd/mm/aaaa): ")
                 obs = input("Observações: ")
@@ -231,8 +231,9 @@ def mostrar_estatisticas():
         especie = pet["especie"].lower()
         especies[especie] = especies.get(especie, 0) + 1
         idade = calcular_idade(pet["nascimento"])
-        if idade > 0:
-            soma_idades += idade
+        if idade >= 0:
+            idade_real = idade if idade >= 1 else 1  # A idade de um pet abaixo de 1 ano completo será contabilizada como 1, para o cálculo da idade média 
+            soma_idades += idade_real
             qtd_validas += 1
     media_idade = soma_idades / qtd_validas if qtd_validas else 0
     print("\n=== Estatísticas ===")
@@ -241,6 +242,7 @@ def mostrar_estatisticas():
         print(f"{esp.capitalize()}: {qtd}")
     print(f"Idade média: {media_idade:.1f} anos\n")
 
+# Programa principal
 carregar_pets()
 carregar_eventos()
 
