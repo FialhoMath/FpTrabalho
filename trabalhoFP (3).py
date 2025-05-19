@@ -15,7 +15,7 @@ def calcular_idade(nascimento):
     except:
         return 0
 
-def gerar_recomendacoes(especie, idade):
+def gerar_recomendacoes(especie, idade): # As recomendações serão fornecidas apenas para as esécies cachorro e gato
     especie = especie.lower()
     recomendacoes = []
     if especie == "cachorro":
